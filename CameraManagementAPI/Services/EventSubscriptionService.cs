@@ -32,8 +32,7 @@ public class EventSubscriptionService
     {
         var subscription = new EventSubscription
         {
-            Callback = request.Callback,
-            Filter = request.Filter
+            Callback = request.Callback
         };
 
         // Если указан конкретный ID камеры, используем его в фильтре

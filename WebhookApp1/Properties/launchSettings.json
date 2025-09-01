@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "WebhookApp1": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:14989;http://localhost:14990"
+    }
+  }
+}

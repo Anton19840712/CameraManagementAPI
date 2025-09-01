@@ -12,7 +12,7 @@ namespace CameraManagementAPI.Controllers;
 /// Контроллер для управления подписками на события
 /// </summary>
 [ApiController]
-[Route("events")]
+[Route("api/events")]
 public class EventsController : ControllerBase
 {
     private readonly EventSubscriptionService _subscriptionService;

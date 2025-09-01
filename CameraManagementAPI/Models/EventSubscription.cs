@@ -68,11 +68,6 @@ public class CreateSubscriptionRequest
     public string Callback { get; set; } = "";
 
     /// <summary>
-    /// Фильтр подписки
-    /// </summary>
-    public EventFilter Filter { get; set; } = new();
-
-    /// <summary>
     /// Идентификатор камеры
     /// </summary>
     public string Id { get; set; } = "*";

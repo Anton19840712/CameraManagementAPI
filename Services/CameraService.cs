@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using CameraManagementAPI.Models;
 
 namespace CameraManagementAPI.Services;
@@ -23,76 +25,15 @@ public class CameraService
         return _cameras.Where(c => c.Region == region);
     }
 
-    /// <summary>
-    /// Получить камеру по ID
-    /// </summary>
-    public Camera? GetCameraById(string cid)
-    {
-        return _cameras.FirstOrDefault(c => c.Cid == cid);
-    }
+	/// <summary>
+	/// Получить камеры по региону
+	/// </summary>
+	public IEnumerable<Camera> GetCamerasAll()
+	{
+		return _cameras;
+	}
 
-    /// <summary>
-    /// Добавить камеру
-    /// </summary>
-    public Camera AddCamera(Camera camera)
-    {
-        if (string.IsNullOrEmpty(camera.Cid))
-        {
-            camera.Cid = Guid.NewGuid().ToString().ToUpper();
-        }
-        
-        _cameras.Add(camera);
-        return camera;
-    }
-
-    /// <summary>
-    /// Обновить камеру
-    /// </summary>
-    public bool UpdateCamera(string cid, Camera updatedCamera)
-    {
-        var existingCamera = GetCameraById(cid);
-        if (existingCamera == null) return false;
-
-        // Обновляем все поля, кроме ID
-        existingCamera.Name = updatedCamera.Name;
-        existingCamera.Longitude = updatedCamera.Longitude;
-        existingCamera.Latitude = updatedCamera.Latitude;
-        existingCamera.Height = updatedCamera.Height;
-        existingCamera.Descr = updatedCamera.Descr;
-        existingCamera.Type = updatedCamera.Type;
-        existingCamera.Model = updatedCamera.Model;
-        existingCamera.Angle = updatedCamera.Angle;
-        existingCamera.Azimuth = updatedCamera.Azimuth;
-        existingCamera.Radius = updatedCamera.Radius;
-        existingCamera.Addr = updatedCamera.Addr;
-        existingCamera.Ipv4Addr = updatedCamera.Ipv4Addr;
-        existingCamera.MacAddr = updatedCamera.MacAddr;
-        existingCamera.Sn = updatedCamera.Sn;
-        existingCamera.Webviewurl = updatedCamera.Webviewurl;
-        existingCamera.Region = updatedCamera.Region;
-        existingCamera.StreamHost = updatedCamera.StreamHost;
-        existingCamera.StreamHttpPort = updatedCamera.StreamHttpPort;
-        existingCamera.StreamName = updatedCamera.StreamName;
-        existingCamera.VideoSystemId = updatedCamera.VideoSystemId;
-        existingCamera.VideoSystemName = updatedCamera.VideoSystemName;
-        existingCamera.Available = updatedCamera.Available;
-
-        return true;
-    }
-
-    /// <summary>
-    /// Удалить камеру
-    /// </summary>
-    public bool DeleteCamera(string cid)
-    {
-        var camera = GetCameraById(cid);
-        if (camera == null) return false;
-
-        _cameras.Remove(camera);
-        return true;
-    }
-
-    /// <summary>
+	/// <summary>
     /// Инициализация тестовых камер
     /// </summary>
     private void InitializeDefaultCameras()

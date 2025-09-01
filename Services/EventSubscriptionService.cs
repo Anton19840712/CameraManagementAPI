@@ -1,5 +1,11 @@
 using CameraManagementAPI.Models;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace CameraManagementAPI.Services;
 
@@ -20,6 +26,7 @@ public class EventSubscriptionService
 
     /// <summary>
     /// Создать подписку на события
+    /// Этот api должен вызываться со стороны динамического шлюза
     /// </summary>
     public EventSubscription CreateSubscription(CreateSubscriptionRequest request)
     {
@@ -52,7 +59,7 @@ public class EventSubscriptionService
     /// <summary>
     /// Получить подписку по ID
     /// </summary>
-    public EventSubscription? GetSubscriptionById(string id)
+    public EventSubscription GetSubscriptionById(string id)
     {
         return _subscriptions.FirstOrDefault(s => s.Id == id && s.IsActive);
     }
@@ -60,7 +67,7 @@ public class EventSubscriptionService
     /// <summary>
     /// Удалить подписку
     /// </summary>
-    public EventSubscription? DeleteSubscription(string id)
+    public EventSubscription DeleteSubscription(string id)
     {
         var subscription = GetSubscriptionById(id);
         if (subscription != null)
@@ -76,12 +83,15 @@ public class EventSubscriptionService
     /// </summary>
     public async Task SendEventAsync(VideoAnalyticsEvent eventData)
     {
+        // получаем все подписки:
         var relevantSubscriptions = GetRelevantSubscriptions(eventData);
         
+        // в отдельной задаче отправляем на них события:
         var sendTasks = relevantSubscriptions.Select(async subscription =>
         {
             try
             {
+                // шлем событие подписчику, в нашей ситуации на апи динамического шлюза
                 await SendEventToSubscriber(subscription, eventData);
                 _logger.LogInformation("Event sent successfully to {Callback}", subscription.Callback);
             }
@@ -116,6 +126,7 @@ public class EventSubscriptionService
 
         var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
         
+        // Отсылаем на отправленные адреса из нашего callback
         using var response = await _httpClient.PostAsync(subscription.Callback, content);
         
         if (!response.IsSuccessStatusCode)

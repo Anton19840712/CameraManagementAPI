@@ -1,6 +1,10 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using CameraManagementAPI.Models;
 using CameraManagementAPI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace CameraManagementAPI.Controllers;
 
@@ -130,7 +134,7 @@ public class EventsController : ControllerBase
     /// POST http://localhost:8080/events/test
     /// </summary>
     [HttpPost("test")]
-    public async Task<ActionResult> GenerateTestEvent([FromQuery] string? cameraId = null)
+    public async Task<ActionResult> GenerateTestEvent([FromQuery] string cameraId = null)
     {
         try
         {

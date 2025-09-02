@@ -237,8 +237,7 @@ public class SubscriptionManagerService : ISubscriptionManagerService
 			await using var connection = new NpgsqlConnection(_connectionString);
 			await connection.OpenAsync();
 
-			await using var cmd = new NpgsqlCommand(@"
-                DELETE FROM webhook_subscriptions WHERE app_name = @app_name", connection);
+			await using var cmd = new NpgsqlCommand(@"DELETE FROM webhook_subscriptions", connection);
 
 			cmd.Parameters.AddWithValue("app_name", _appName);
 			await cmd.ExecuteNonQueryAsync();

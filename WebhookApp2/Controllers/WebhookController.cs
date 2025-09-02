@@ -14,7 +14,12 @@ public class WebhookController : ControllerBase
         _logger = logger;
     }
 
-    [HttpPost("events")]
+	/// <summary>
+	/// ѕолучаем сообщени€ из видеонаблюдени€
+	/// </summary>
+	/// <param name="eventData"></param>
+	/// <returns></returns>
+	[HttpPost("events")]
     public IActionResult ReceiveEvent([FromBody] WebhookEventData eventData)
     {
         try
